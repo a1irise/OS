@@ -1,16 +1,16 @@
 #!/bin/bash
 
-if [[ $# -lt 3 ]]
+if [[ $# -ne 3 ]]
 then
-	echo "Missing parameters, unable to execute." >&2
+	echo "Error: invalid number of arguments" 1>&2
 	./help.sh calc
-	exit
+	exit 1
 fi
 
 if [[ ! $2 =~ ^[+-]?[0-9]+$ || ! $3 =~ ^[+-]?[0-9]+$ ]]
 then
-	echo "Those don't look like integers, try again." >&2
-	exit
+	echo "Error: expected two integers" 1>&2
+	exit 1
 fi
 
 num1=$2
@@ -32,14 +32,13 @@ case $1 in
 	"div")
 		if [[ $num2 == 0 || ${num2:1} == 0 ]]
 		then
-			echo "Division by zero." >&2
-			exit
+			echo "Error: division by zero" 1>&2
+			exit 1
 		fi
-
 		echo $(($num1 / $num2))
 		;;
 	*)
-		echo "Invalid command, try again." >&2
+		echo "Error: invalid command" >&2
 		./help.sh calc
 		exit
 		;;
