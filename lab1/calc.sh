@@ -38,8 +38,8 @@ case $1 in
 		echo $(($num1 / $num2))
 		;;
 	*)
-		echo "Error: invalid command" >&2
+		echo "Error: invalid command" 1>&2
 		./help.sh calc
-		exit
+		exit 1
 		;;
 esac
