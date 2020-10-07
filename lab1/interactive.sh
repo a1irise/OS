@@ -1,13 +1,5 @@
 #!/usr/bin/bash
 
-source calc.sh
-source search.sh
-source reverse.sh
-source exit.sh
-source strlen.sh
-source log.sh
-source help.sh
-
 main_menu ()
 {
 	echo "1. calc"
@@ -33,7 +25,7 @@ interactive ()
 	do
 		main_menu
 
-		mode=-1
+		mode=0
 		while [[ $mode -lt 1 || $mode -gt 7 ]]
 		do
 			read -p "Mode: " mode
@@ -43,7 +35,7 @@ interactive ()
 			"1")
 				calc_menu
 
-				operation=-1
+				operation=0
 				while [[ $operation -lt 1 || $operation -gt 4 ]]
 				do
 					read -p "Operation: " operation
@@ -77,9 +69,9 @@ interactive ()
 				reverse $to_reverse $destination
 				;;
 			"4")
-				IFS=''
-				read -p "Enter a string (without \"  \" unless you want those to count): " str
-				strlen $str
+				read -p "Enter a string (\"example\"): " str
+				[[ $str == "\""*"\"" ]] && str=${str:1:-1}
+				strlen "$str"
 				;;
 			"5")
 				log

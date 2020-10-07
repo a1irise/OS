@@ -2,13 +2,6 @@
 
 calc ()
 {
-	if [[ $# -ne 3 ]]
-	then
-		echo "Error: invalid number of arguments" 1>&2
-		calc_help
-		exit 1
-	fi
-
 	if [[ ! $2 =~ ^[+-]?[0-9]+$ || ! $3 =~ ^[+-]?[0-9]+$ ]]
 	then
 		echo "Error: expected two integers" 1>&2
