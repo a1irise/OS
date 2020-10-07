@@ -1,10 +1,16 @@
 #!/bin/bash
 
-if [[ $# -lt 1 ]]
-then
-	echo "You didn't enter a string, nothing to count." >&2
-	exit
-fi
+source help.sh
 
-str="$1"
-echo ${#str}
+strlen ()
+{
+	if [[ $# -ne 1 ]]
+	then
+		echo "Error: invalid number of arguments" 1>&2
+		strlen_help
+		exit 1
+	fi
+
+	str="$1"
+	echo ${#str}
+}

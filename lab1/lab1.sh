@@ -1,32 +1,41 @@
 #!/bin/bash
 
+source calc.sh
+source search.sh
+source reverse.sh
+source strlen.sh
+source log.sh
+source exit.sh
+source help.sh
+source interactive.sh
+
 case $1 in
 	"calc")
-		./calc.sh $2 $3 $4
+		calc $2 $3 $4
 		;;
 	"search")
-		./search.sh $2 $3
+		search $2 $3
 		;;
 	"reverse")
-		./reverse.sh $2 $3
+		reverse $2 $3
 		;;
 	"strlen")
-		[[ $# -lt 2 ]] && ./strlen.sh || ./strlen.sh "$2"
+		[[ $# -lt 2 ]] && strlen || strlen "$2"
 		;;
 	"log")
-		./log.sh
+		log
 		;;
 	"help")
-		./help.sh
+		general_help
 		;;
 	"interactive")
-		./interactive.sh
+		interactive
 		;;
 	"exit")
-		./exit.sh $2
+		custom_exit $2
 		;;
 	*)
 		echo "Sorry that command doesn't exist, but these ones do, try one of them."
-		./help.sh
+		general_help
 		;;
 esac

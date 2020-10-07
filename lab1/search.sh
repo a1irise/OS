@@ -1,22 +1,27 @@
 #!/bin/bash
 
-if [[ $# -lt 2 ]]
-then
-	echo "Missing parameters, unable to execute." >&2
-	./help.sh search
-	exit
-fi
+source help.sh
 
-if [[ ! -d $1 ]]
-then
-	echo "There is no directory with that name." >&2
-	exit
-fi
+search ()
+{
+	if [[ $# -ne 2 ]]
+	then
+		echo "Error: invalid number of arguments" 1>&2
+		search_help
+		exit 1
+	fi
 
-if [[ ! -r $1 ]]
-then
-	echo "You don't have access to that directory." >&2
-	exit
-fi
+	if [[ ! -d $1 ]]
+	then
+		echo "Error: directory not found" 1>&2
+		exit 1
+	fi
 
-grep -irn $2 $1
+	if [[ ! -r $1 ]]
+	then
+		echo "Error: permission denied" 1>&2
+		exit 1
+	fi
+
+	grep -irn $2 $1 2>/dev/null
+}

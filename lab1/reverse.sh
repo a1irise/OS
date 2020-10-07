@@ -1,33 +1,38 @@
 #!/bin/bash
 
-if [[ $# -lt 2 ]]
-then
-	echo "Missing parameters, unable to execute." >&2
-	./help.sh reverse
-	exit
-fi
+source help.sh
 
-if [[ ! -f $1 ]]
-then
-	echo "There no file with that name." >&2
-	exit
-fi
+reverse ()
+{
+	if [[ $# -ne 2 ]]
+	then
+		echo "Error: invalid number of argumets" 1>&2
+		reverse_help
+		exit 1
+	fi
 
-if [[ ! -r $1 ]]
-then
-	echo "You don't have permission to look at that file." >&2
-	exit
-fi
+	if [[ ! -f $1 ]]
+	then
+		echo "Error: file not found $1" 1>&2
+		exit 1
+	fi
 
-touch $2
+	if [[ ! -r $1 ]]
+	then
+		echo "Error: permission denied $1" 1>&2
+		exit 1
+	fi
 
-if [[ ! -w $2 ]]
-then
-	echo "You don't have permission to write in that file." >&2
-	exit
-fi
+	touch $2
 
-tac $1 > temp.txt
-rev temp.txt > $2
+	if [[ ! -w $2 ]]
+	then
+		echo "Error: permission denied $2" 1>&2
+		exit 1
+	fi
 
-rm temp.txt
+	tac $1 > temp.txt
+	rev temp.txt > $2
+
+	rm temp.txt
+}
