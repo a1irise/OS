@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source help.sh
-
 strlen ()
 {
 	str="$1"
