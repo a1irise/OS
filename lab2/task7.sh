@@ -11,7 +11,7 @@ do
 	fi
 done > temp.txt
 
-sleep 4s
+sleep 1m
 
 echo "PID : CMDLINE : READ_BYTES"
 
