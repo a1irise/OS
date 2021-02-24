@@ -1,32 +1,31 @@
 #!/bin/bash
 
-echo "PID : PPID : ART" > task5.txt
+> task5.txt
 
-for unique_ppid in $(awk '{print $3}' task4.txt | uniq)
+./task4.sh
+cat task4.txt | awk '{print $3}' | uniq > temp
+
+while read uniq_ppid
 do
-	[[ $unique_ppid == "PPID" ]] && continue
-
 	sum_art=0
-	counter=0
+	count=0
 
 	while read line
 	do
+		pid=$(echo $line | awk '{print $1}')
 		ppid=$(echo $line | awk '{print $3}')
+		art=$(echo $line | awk '{print $5}')
 
-		[[ $ppid -lt $unique_ppid || $ppid == "PPID" ]] && continue
-
-		[[ $ppid -gt $unique_ppid ]] && break
-
-		if [[ $ppid -eq $unique_ppid ]]
+		[[ $ppid -lt $uniq_ppid ]] && continue
+		[[ $ppid -gt $uniq_ppid ]] && break
+		if [[ $ppid -eq $uniq_ppid ]]
 		then
-			pid=$(echo $line | awk '{print $1}')
-			art=$(echo $line | awk '{print $5}')
-			counter=$((counter + 1))
 			sum_art=$(echo "scale=5 ; $sum_art + $art" | bc)
-			echo "$pid : $ppid : $art" >> task5.txt
+			count=$((count+1))
+			echo $line >> task5.txt
 		fi
 	done < task4.txt
 
-	avg_art=$(echo "scale=5 ; $sum_art / $counter" | bc)
-	echo "Average_Sleeping_Children_of_ParentID=$unique_ppid is $avg_art" >> task5.txt
-done
+	avg_art=$(echo "scale=5 ; $sum_art / $count" | bc)
+	echo "Average_Sleeping_Children_of_ParentID=$ppid_ is $avg_art" >> task5.txt
+done < temp

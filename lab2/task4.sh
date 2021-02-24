@@ -1,17 +1,17 @@
 #!/bin/bash
 
-echo "PID : PPID : ART" > task4.txt
+ps aux | awk '{print $2}' | tail -n +2 > temp
 
-for pid in $(ps aux | awk '{print $2}')
+while read pid
 do
-	dir=/proc/$pid
+	[[ ! -d /proc/$pid ]] && continue
+	ppid=$(awk '$1 == "PPid:" {print $2}' /proc/$pid/status)
+	sum_exec_runtime=$(awk '$1 == "se.sum_exec_runtime" {print $3}' /proc/$pid/sched)
+	nr_switches=$(awk '$1 == "nr_switches" {print $3}' /proc/$pid/sched)
+	art=$(echo "scale=5 ; $sum_exec_runtime / $nr_switches" | bc)
+	echo "$pid : $ppid : $art" >> temp2
+done < temp
 
-	if [[ -d $dir ]]
-	then
-		ppid=$(awk '{if ($1 == "PPid:") print $2}' $dir/status)
-		sum_exec_runtime=$(awk '{if ($1 == "se.sum_exec_runtime") print $3}' $dir/sched)
-		nr_switches=$(awk '{if ($1 == "nr_switches") print $3}' $dir/sched)
-		art=$(echo "scale=5 ; $sum_exec_runtime / $nr_switches" | bc)
-		echo "$pid : $ppid : $art"
-	fi
-done | sort -n -k3 >> task4.txt
+sort -k3 -n temp2 > task4.txt
+rm temp
+rm temp2

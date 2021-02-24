@@ -1,21 +1,16 @@
 #!/bin/bash
 
-max_ram=-1
-max_pid=-1
+ps aux | awk '{print $2}' > temp
 
-for pid in $(ps aux | awk '{print $2}')
+max=0
+max_pid=0
+
+while read pid
 do
-	dir=/proc/$pid
-
-	if [[ -d $dir ]]
-	then
-		ram=$(awk '{if ($1 == "VmSize:") print $2}' $dir/status)
-		if [[ $ram -gt $max_ram ]]
-		then
-			max_ram=$ram
-			max_pid=$pid
-		fi
-	fi
-done
+	[[ ! -d /proc/$pid ]] && continue
+	mem=$(cat /proc/$pid/status | awk '$1 == "VmSize:" {print $2}')
+	[[ $mem -gt $max ]] && { max=$mem; max_pid=$pid; }
+done < temp
 
 echo $max_pid
+rm temp

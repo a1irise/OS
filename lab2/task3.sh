@@ -1,7 +1,3 @@
 #!/bin/bash
 
-echo "PID"
-ps aux | sort -nr -k9 | head -n 1 | awk '{print $2}'
-
-
-
+ps aux | sort -k9 -nr | head -n 1 | awk '{print $2}'
