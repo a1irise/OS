@@ -16,7 +16,7 @@ do
 		mode="*"
 		;;
 	[0-9]*)
-		case $mode in
+		case "$mode" in
 		"+")
 			res=$((res + line))
 			echo $res
@@ -33,7 +33,7 @@ do
 		exit 0
 		;;
 	*)
-		echo "Error: invalid input." >&2
+		echo "Error: invalid input." 1>&2
 		killall tail
 		exit 1
 		;;

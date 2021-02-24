@@ -1,6 +1,7 @@
 #!/bin/bash
 
-ps aux | awk '{print $2}' > temp
+> temp
+ps aux | awk '{print $2}' >> temp
 
 max=0
 max_pid=0

@@ -29,3 +29,5 @@ do
 	avg_art=$(echo "scale=5 ; $sum_art / $count" | bc)
 	echo "Average_Sleeping_Children_of_ParentID=$ppid_ is $avg_art" >> task5.txt
 done < temp
+
+rm temp
